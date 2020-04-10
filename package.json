@@ -5,8 +5,9 @@
   "main": "index.js",
   "repository": "git@github.com:92bondstreet/bib.git",
   "dependencies": {
-    "axios": "^0.19.1",
-    "cheerio": "^1.0.0-rc.3"
+    "axios": "^0.19.2",
+    "cheerio": "^1.0.0-rc.3",
+    "michelin": "0.0.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.2"

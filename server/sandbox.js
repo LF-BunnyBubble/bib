@@ -1,15 +1,53 @@
-/* eslint-disable no-console, no-process-exit */
+
 const michelin = require('./michelin');
+const maitres = require('./maitre');
 
-async function sandbox (searchLink = 'https://guide.michelin.com/fr/fr/centre-val-de-loire/veuves/restaurant/l-auberge-de-la-croix-blanche') {
+const fs = require('fs');
+
+//const restaurants = michelin.get();
+
+//restaurants.forEach(restaurant => {
+//  console.log(restaurant.name);
+//})
+
+async function sandbox (searchLink) {
   try {
-    console.log(`🕵️‍♀️  browsing ${searchLink} source`);
 
-    const restaurant = await michelin.scrapeRestaurant(searchLink);
 
-    console.log(restaurant);
-    console.log('done');
+    //-MICHELIN-
+    console.log("BROWSING ===> https://guide.michelin.com/fr/fr/restaurants/bib-gourmand");
+    const numberOfPages = await michelin.get_numberOfPages("https://guide.michelin.com/fr/fr/restaurants/bib-gourmand/page/")
+    
+    //const numberOfPages = 1;
+    console.log("RETRIEVING ===> links of michelin restaurants");
+    const listOfLinks = await michelin.get_listOfLinks(numberOfPages); 
+    
+    console.log("RETRIEVING ===> data of michelin restaurants");
+    let listOfRestaurants = [];
+    for (link of listOfLinks){
+       await michelin.scrap_dataOfRestaurants(link, listOfRestaurants); 
+      }
+
+    console.log("WRITING ===> bibGourmand.json");
+    const jsonOfbibGourmand= await JSON.stringify(listOfRestaurants, null, 2);
+    fs.writeFileSync('./bibGourmand.json', jsonOfbibGourmand);
+
+    //-MAITRES-
+    // console.log('Browsing https://www.maitresrestaurateurs.fr');
+    // const restaurants2 = await maitres.get();
+    // const json2 = await JSON.stringify(restaurants2, null, 2);
+    // fs.writeFileSync('./MaitreRestaurateur.json', json2);
+
+
+    
+
+    //console.log('Looking for the restaurants that are common to both websites ...');
+    //const bibList = await commonBib.findBib(); 
+    //const json3 = await JSON.stringify(bibList, null, 2);
+    //fs.writeFileSync('./commonBib.json', json3);
+
     process.exit(0);
+
   } catch (e) {
     console.error(e);
     process.exit(1);
@@ -18,4 +56,9 @@ async function sandbox (searchLink = 'https://guide.michelin.com/fr/fr/centre-va
 
 const [,, searchLink] = process.argv;
 
-sandbox(searchLink);
+const michelinDefaultSearch = 'https://guide.michelin.com/fr/fr/restaurants/bib-gourmand/page/';
+
+
+
+sandbox();
+console.log("\n===> End of sandbox.js");
