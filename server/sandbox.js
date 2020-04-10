@@ -32,19 +32,7 @@ async function sandbox (searchLink) {
     const jsonOfbibGourmand= await JSON.stringify(listOfRestaurants, null, 2);
     fs.writeFileSync('./bibGourmand.json', jsonOfbibGourmand);
 
-    //-MAITRES-
-    // console.log('Browsing https://www.maitresrestaurateurs.fr');
-    // const restaurants2 = await maitres.get();
-    // const json2 = await JSON.stringify(restaurants2, null, 2);
-    // fs.writeFileSync('./MaitreRestaurateur.json', json2);
 
-
-    
-
-    //console.log('Looking for the restaurants that are common to both websites ...');
-    //const bibList = await commonBib.findBib(); 
-    //const json3 = await JSON.stringify(bibList, null, 2);
-    //fs.writeFileSync('./commonBib.json', json3);
 
     process.exit(0);
 
